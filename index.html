@@ -1,0 +1,118 @@
+<html>
+<head>
+
+<script src="https://cdn.flybase.io/flybase.js"></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+
+</head>
+
+<body>
+
+<ul id='messages'>Messages</ul>
+
+<input type='text' id='name' placeholder='Name'>
+<input type='text' id='message' placeholder='Message'>
+
+<script>
+    var ref = new Flybase("baad4775-71b7-41ef-ad89-090c48e3956e", "tutorial", "chat");
+    ref.on('value', function (data) {
+        data.forEach( function( message ){
+            var message = message.value();
+            addChat(message.name, message.text);
+        });
+    });
+    
+    $('#message').keypress(function (e) {
+        if (e.keyCode == 13) {
+            var name = $('#name').val();
+            var text = $('#message').val();
+            ref.set( {name:name, text:text} );
+            $('#message').val('');
+            
+        }
+    });
+    
+    ref.on('added', function(data) {
+        var message = data.value();
+        addChat(message.name, message.text);
+    });
+
+    ref.on("added", function(data) {
+        var name = data.value().name;
+        alert("My name is" + name);
+        addChat(name);
+    });
+    
+    function addChat(name, text) {
+        $('<li/>').text(text).prepend($('<strong/>').text(name+': ')).appendTo($('#messagesDiv'));
+        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+    }
+</script>
+
+</body>
+</html>
+        
+
+
+
+<!--html> 
+
+<head>
+<script src="https://cdn.flybase.io/flybase.js"></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+
+</head>
+
+<body>
+    
+    <ul id='messages'></ul> 
+
+    <input type='text' id='name' placeholder='Name'>
+    <input type='text' id='message' placeholder='Message'>
+    
+
+    <script>
+        var Ref = new Flybase("baad4775-71b7-41ef-ad89-090c48e3956e", "tutorial", "chat");
+    
+        Ref.on('value', function(data) {
+            
+            data.forEach( function(message){
+                var message = message.value();
+                addChat(message.name, message.text,);
+            });
+        });
+        
+        $('#message').keypress(function (e) {
+           
+            if (e.keyCode == 13) {
+
+                var name = $('#name').val();
+
+                var text = $('#message').val();
+
+                Ref.set( {name: name, text: text});
+
+                $('#message').val('');
+
+            }
+
+        });
+
+
+        Ref.on('added', function(data) {
+            var message = data.value();
+            addChat(message.name, message.text);
+        });
+
+        function addChat(name, text){
+            $('<li/>').text(text).prepend($('<strong/>').text(name+': ')).appendTo($('#messagesDiv'));
+            $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+        }
+
+
+    </script>
+
+</body>
+
+</html-->
+
